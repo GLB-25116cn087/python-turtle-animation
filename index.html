@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Turtle Animation</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: clamp(24px, 5vw, 42px);
+            margin-bottom: 12px;
+            text-align: center;
+        }
+
+        p {
+            color: #bbb;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        canvas {
+            width: min(90vw, 600px);
+            height: min(70vh, 600px);
+            display: block;
+        }
+
+        button {
+            margin-top: 12px;
+            padding: 11px 24px;
+            border: 1px solid #00ffff;
+            border-radius: 25px;
+            background: transparent;
+            color: #00ffff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #00ffff;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>✨ Turtle Spiral Animation</h1>
+    <p>A colorful animation made with JavaScript</p>
+
+    <canvas id="canvas" width="600" height="600"></canvas>
+
+    <button onclick="startAnimation()">Replay Animation ↻</button>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const colors = ["cyan", "blue", "magenta", "pink"];
+        let timer;
+
+        function startAnimation() {
+            clearInterval(timer);
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            let x = 300;
+            let y = 300;
+            let angle = 0;
+            let i = 0;
+
+            ctx.fillStyle = "white";
+            ctx.beginPath();
+            ctx.arc(x, y, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+
+            timer = setInterval(() => {
+                if (i >= 120) {
+                    clearInterval(timer);
+                    return;
+                }
+
+                ctx.strokeStyle = colors[i % 4];
+                ctx.fillStyle = colors[i % 4];
+                ctx.lineWidth = 1.5;
+
+                const radians = angle * Math.PI / 180;
+                const nextX = x + (i * 2) * Math.cos(radians);
+                const nextY = y - (i * 2) * Math.sin(radians);
+
+                ctx.beginPath();
+                ctx.moveTo(x, y);
+                ctx.lineTo(nextX, nextY);
+                ctx.stroke();
+
+                ctx.beginPath();
+                ctx.arc(nextX, nextY, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+
+                x = nextX;
+                y = nextY;
+                angle += 91;
+                i++;
+            }, 35);
+        }
+
+        startAnimation();
+    </script>
+</body>
+</html>
